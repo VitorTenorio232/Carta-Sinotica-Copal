@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Script Unificado e Automático - GFS + METAR + Satélite GOES-19
-Versão 11.1 - Removida a plotagem de centros de Alta e Baixa (A/B).
+Versão 11.1 - Versão Final.
 
 Funcionalidades:
  - Plota cartas sinóticas com dados GFS e METAR.
@@ -10,6 +10,7 @@ Funcionalidades:
  - Exibe as divisas dos estados do Brasil (fonte IBGE 2024) em todos os mapas.
  - Interface gráfica unificada e adaptativa.
  - Limpeza automática de todos os dados de GFS e METAR ao final da execução.
+ - Ponto na Cidade de Itajubá/MG em todos os produtos
 """
 import os
 import sys
@@ -718,3 +719,4 @@ if __name__ == "__main__":
     warnings.filterwarnings("ignore")
     app = App()
     app.mainloop()
+
