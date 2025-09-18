@@ -11,6 +11,8 @@ Funcionalidades:
  - Interface gráfica unificada e adaptativa.
  - Limpeza automática de todos os dados de GFS e METAR ao final da execução.
  - Ponto na Cidade de Itajubá/MG em todos os produtos
+ 
+Criado por: VitorTenorio (COPAL)
 """
 import os
 import sys
@@ -357,11 +359,14 @@ def plot_gfs_map(region, data_dirs, zoom_key, gfs_file_path, log_function, histo
                 valid_time_str += f" | METAR {rounded_time.strftime('%HZ')}"
         except Exception as e: log_function(f"⚠️ Erro ao processar METAR: {e}")
 
-    # ALTERAÇÃO INSERIDA: Adiciona a estrela roxa em Itajubá
+    # Adiciona a estrela roxa em Itajubá
     itajuba_lon, itajuba_lat = -45.45, -22.42
     ax.plot(itajuba_lon, itajuba_lat, marker='*', color='purple', markersize=12, transform=ccrs.PlateCarree(), zorder=10)
     
+    # Adiciona os títulos
     plt.title(f"{produto_adicional} - {region}\n{valid_time_str}", fontsize=14, loc='left')
+    plt.title("Criado por: VitorTenorio (COPAL)", fontsize=10, loc='right')
+    
     fig.tight_layout(pad=3.0)
     fname = os.path.join(map_save_dir, f"map_{region}_{produto_adicional.replace(' ', '_')}_{datetime.now().strftime('%Y%m%d%H%M%S')}.png")
     fig.savefig(fname, dpi=200, bbox_inches='tight')
@@ -420,11 +425,14 @@ def plot_satellite_map(map_save_dir, data_dirs, zoom_key, log_function, historic
         except Exception as e: log_function(f"Aviso: Não foi possível plotar os estados do Brasil. {e}")
         ax.gridlines(draw_labels=True, dms=True, x_inline=False, y_inline=False)
 
-        # ALTERAÇÃO INSERIDA: Adiciona a estrela roxa em Itajubá
+        # Adiciona a estrela roxa em Itajubá
         itajuba_lon, itajuba_lat = -45.45, -22.42
         ax.plot(itajuba_lon, itajuba_lat, marker='*', color='purple', markersize=12, transform=ccrs.PlateCarree(), zorder=10)
 
+        # Adiciona os títulos
         plt.title(f"GOES-19 - {key}\n{sat_time.strftime('%Y-%m-%d %H:%M UTC')}", fontsize=14, loc='left')
+        plt.title("Criado por: VitorTenorio (COPAL)", fontsize=10, loc='right')
+        
         fig.tight_layout(pad=3.0)
         fname = os.path.join(map_save_dir, f"satellite_{key.replace(' ', '_')}_{datetime.now().strftime('%Y%m%d%H%M%S')}.png")
         fig.savefig(fname, dpi=200, bbox_inches='tight')
@@ -502,11 +510,13 @@ def plot_satellite_frame(save_dir, data_dirs, zoom_key, file_path, config, key, 
         if os.path.exists(shapefile):
             ax.add_geometries(shpreader.Reader(shapefile).geometries(), ccrs.PlateCarree(), edgecolor='white', facecolor='none', linewidth=0.5, zorder=2)
         
-        # ALTERAÇÃO INSERIDA: Adiciona a estrela roxa em Itajubá
+        # Adiciona a estrela roxa em Itajubá
         itajuba_lon, itajuba_lat = -45.45, -22.42
         ax.plot(itajuba_lon, itajuba_lat, marker='*', color='purple', markersize=12, transform=ccrs.PlateCarree(), zorder=10)
         
+        # Adiciona o timestamp e o crédito do criador
         ax.text(0.02, 0.02, timestamp.strftime('%d-%b-%Y %H:%M UTC'), transform=ax.transAxes, color='white', fontsize=12, bbox=dict(facecolor='black', alpha=0.5))
+        ax.text(0.98, 0.02, "VitorTenorio (COPAL)", transform=ax.transAxes, color='white', fontsize=10, ha='right', bbox=dict(facecolor='black', alpha=0.5))
         
         fname = os.path.join(save_dir, f"frame_{timestamp.strftime('%Y%m%d%H%M')}.png")
         plt.savefig(fname, dpi=100, bbox_inches='tight', pad_inches=0)
@@ -520,7 +530,8 @@ def plot_satellite_frame(save_dir, data_dirs, zoom_key, file_path, config, key, 
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.title("Gerador de Cartas e Satélite v11.1")
+        # Altera o título da janela para incluir o criador
+        self.title("Gerador de Cartas e Satélite v11.1 | por VitorTenorio (COPAL)")
         self.geometry("750x850")
         ctk.set_appearance_mode("System"); ctk.set_default_color_theme("blue")
         self.grid_columnconfigure(0, weight=1); self.grid_rowconfigure(3, weight=1)
@@ -719,4 +730,3 @@ if __name__ == "__main__":
     warnings.filterwarnings("ignore")
     app = App()
     app.mainloop()
-
